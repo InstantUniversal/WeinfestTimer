@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Weinfest Countdown 🍷</title>
+
+<style>
+:root {
+  --wine: #7b1e3c;
+  --gold: #f3c969;
+  --dark: #1c1c1c;
+  --light: #f8f5f2;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2a0f18, #5a162c);
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  max-width: 900px;
+  width: 100%;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 10px;
+  color: var(--gold);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 40px;
+}
+
+.countdowns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--gold);
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.time-box {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 15px 10px;
+  min-width: 70px;
+}
+
+.number {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.footer {
+  margin-top: 50px;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.footer span {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+@media (max-width: 500px) {
+  .time-box {
+    min-width: 60px;
+  }
+  .number {
+    font-size: 1.6rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>🍷 Weinfest Countdown 🍷</h1>
+  <div class="subtitle">
+    Frankenwein, Freunde & eskalierende Vorfreude  
+  </div>
+
+  <div class="countdowns">
+
+    <div class="card">
+      <h2>🎪 Weinfest Eröffnung</h2>
+      <div class="timer" id="festTimer"></div>
+    </div>
+
+    <div class="card">
+      <h2>🍺 Anstich</h2>
+      <div class="timer" id="anstichTimer"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Etz is klar: <span>Der Countdown läuft.</span><br/>
+    30.04.2026 – Nenzenheim ruft 🍇
+  </div>
+</div>
+
+<script>
+const festDate = new Date("2026-04-30T20:00:00");
+const anstichDate = new Date("2026-04-30T16:00:00");
+
+function createTimer(containerId, targetDate) {
+  const container = document.getElementById(containerId);
+
+  function update() {
+    const now = new Date();
+    let diff = targetDate - now;
+
+    if (diff <= 0) {
+      container.innerHTML = "<strong>🎉 ES GEHT LOS! 🎉</strong>";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    diff %= 1000 * 60 * 60 * 24;
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    diff %= 1000 * 60 * 60;
+    const minutes = Math.floor(diff / (1000 * 60));
+    diff %= 1000 * 60;
+    const seconds = Math.floor(diff / 1000);
+
+    container.innerHTML = `
+      <div class="time-box">
+        <div class="number">${days}</div>
+        <div class="label">Tage</div>
+      </div>
+      <div class="time-box">
+        <div class="number">${hours}</div>
+        <div class="label">Std</div>
+      </div>
+      <div class="time-box">
+        <div class="number">${minutes}</div>
+        <div class="label">Min</div>
+      </div>
+      <div class="time-box">
+        <div class="number">${seconds}</div>
+        <div class="label">Sek</div>
+      </div>
+    `;
+  }
+
+  update();
+  setInterval(update, 1000);
+}
+
+createTimer("festTimer", festDate);
+createTimer("anstichTimer", anstichDate);
+</script>
+</body>
+</html>
